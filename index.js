@@ -1,22 +1,7 @@
-const express = require('express');
-const cors = require('cors');
 require('dotenv').config();
 
-//servidor express
-const app = express();
+const Server = require('./models/server');
 
-//Directorio publico
-app.use( express.static('public') );
+const server = new Server();
 
-//CORS
-app.use( cors() );
-
-//parse body
-app.use( express.json() );
-
-//rutas
-app.use( '/api/v1', require('./routes/routes'));
-
-app.listen( process.env.PORT, () => {
-    console.log(`Server en puerto ${ process.env.PORT }`);
-} );
+server.listen();

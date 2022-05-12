@@ -12,7 +12,7 @@ const dbConnection = async() => {
 
         db.connect((err) => {
             if (!err) {
-                console.log('Conexión exitosa');
+                console.log('Conexión Exitosa a la DB');
             } else {
                 console.log('Sin Conexion: ' + err);
             }
