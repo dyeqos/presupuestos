@@ -3,25 +3,22 @@ const bcryptjs = require('bcryptjs');
 
 const Usuario = require('../models/usuario');
 
-const listarUsuarios = (req, res = response) => {
+const listarUsuarios = async(req, res = response) => {
+
+    const usuarios = await Usuario.find().where('aud_estado').ne(3);
+
     res.json({
-        ok: true
+        ok: true,
+        msg: "Listado de usuarios",
+        data: usuarios
     });
 }
 
 const crearUsuarios = async(req, res = response) => {
 
-    const {password, correo, ...rest} = req.body;
+    const { password } = req.body;
 
-    const usuario = new Usuario( rest );
-
-    ///verificar correo
-    const existeCorreo = await Usuario.findOne( {correo} );
-    if( existeCorreo ){
-        return res.status(400).json({
-            msg: "el coreo esta registrado"
-        })
-    }
+    const usuario = new Usuario( req.body );
     ///Encriptar contraseña
     const salt = bcryptjs.genSaltSync();
     usuario.password = bcryptjs.hashSync( password, salt );
@@ -29,19 +26,42 @@ const crearUsuarios = async(req, res = response) => {
     await usuario.save();
     
     res.json({
-        usuario
+        ok: true,
+        msg: "Registro Correcto",
+        data: usuario
     });
 }
 
-const modificarUsuarios = (req, res = response) => {
+const modificarUsuarios = async(req, res = response) => {
+
+    const { _id, id, password, google, correo, ...resto } = req.body;
+
+    ///Encripta nuevo password
+    if( password ){
+        const salt = bcryptjs.genSaltSync();
+        resto.password = bcryptjs.hashSync( password, salt );
+    }
+
+    ///Modificación de registro
+    resto.aud_estado = 2;
+    const usuario = await Usuario.findByIdAndUpdate( id, resto );
+
     res.json({
-        ok: true
+        ok: true,
+        msg: "Modificación Correcto",
+        data: usuario
     });
 }
 
-const eliminarUsuarios = (req, res = response) => {
+const eliminarUsuarios = async(req, res = response) => {
+
+    const { _id, id } = req.body;
+
+    const usuario = await Usuario.findByIdAndUpdate( id, {aud_estado:3} );
+
     res.json({
-        ok: true
+        ok: true,
+        msg: "Usuario Eliminado"
     });
 }
 
