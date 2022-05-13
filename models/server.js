@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const { dbConnection } = require('../database/config');
+const { dbConnectionMysql, dbConnectionMongoose } = require('../database/config');
 
 class Server {
     constructor(){
@@ -16,11 +16,12 @@ class Server {
         this.middlewares();
 
         //Rutas Aplicacion
-        this.routes();
+        this.routes();        
     }
 
     async conectarDB(){
-        await dbConnection();
+        //await dbConnectionMysql();
+        await dbConnectionMongoose();
     }
 
     routes(){
