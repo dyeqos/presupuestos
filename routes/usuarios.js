@@ -1,13 +1,19 @@
 const { Router } = require('express');
 const { check } = require("express-validator");
-const { listarUsuarios, modificarUsuarios, crearUsuarios, eliminarUsuarios } = require("../controllers/usuarios");
-const { validacionCorreo, validacionID } = require('../helpers/validaciones-db');
+
 const { validarCampos } = require('../middlewares/validarCampos');
+const { validarJWT } = require('../middlewares/validarJWT');
+
+const { validacionCorreo, validacionID } = require('../helpers/validaciones-db');
+
+const { listarUsuarios, modificarUsuarios, crearUsuarios, eliminarUsuarios } = require("../controllers/usuarios");
+
 const router = Router();
 
 router.get('/', listarUsuarios );
 
 router.post('/',[
+    validarJWT,
     check("nombre","Revise el formato del nombre").exists().notEmpty().isString().isUppercase(),
     check("paterno","Revise el formato del apellido paterno").exists().notEmpty().isString().isUppercase(),
     check("materno","Revise el formato del apellido materno").exists().notEmpty().isString().isUppercase(),
@@ -19,6 +25,7 @@ router.post('/',[
 ] ,crearUsuarios );
 
 router.put('/',[
+    validarJWT,
     check('id','No es un ID válido').isMongoId(),
     check('id').custom( validacionID ),
     check("nombre","Revise el formato del nombre").exists().notEmpty().isString().isUppercase(),
@@ -31,8 +38,10 @@ router.put('/',[
 ], modificarUsuarios );
 
 router.delete('/',[
+    validarJWT,
     check('id','No es un ID válido').isMongoId(),
     check('id').custom( validacionID ),
+    validarCampos
 ], eliminarUsuarios );
 
 module.exports = router; 

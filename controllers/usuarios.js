@@ -17,12 +17,11 @@ const listarUsuarios = async(req, res = response) => {
 const crearUsuarios = async(req, res = response) => {
 
     const { password } = req.body;
-
     const usuario = new Usuario( req.body );
+
     ///Encriptar contraseña
     const salt = bcryptjs.genSaltSync();
     usuario.password = bcryptjs.hashSync( password, salt );
-
     await usuario.save();
     
     res.json({
