@@ -1,5 +1,6 @@
 const { response } = require('express');
 const jwt = require('jsonwebtoken');
+const { generarJWT } = require('../helpers/generar-jwt');
 
 const Usuario = require('../models/usuario');
 
@@ -38,11 +39,11 @@ const validarJWT = async(req, res = response, next ) => {
 
         ///Devuleve el Usuario en la Request
         req.usuario = usuario;
+        req.token = await generarJWT( uid ) ;
 
         next();
         
     } catch (error) {
-        console.log(error)
         res.status(401).json({
             ok: false, 
             msg: "Token inválido"

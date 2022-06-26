@@ -13,7 +13,7 @@ const login = async(req, res= response) => {
         if( !usuario ){
             return res.status(400).json({
                 ok: false,
-                msg: "Usuario o Correo inválidos"
+                msg: "Usuario o Correo inválido"
             });
         }
 
@@ -21,7 +21,7 @@ const login = async(req, res= response) => {
         if( !usuario.aud_estado ){
             return res.status(400).json({
                 ok: false,
-                msg: "Usuario o Correo inválidos"
+                msg: "Usuario o Correo inválido"
             });
         }
 
@@ -30,14 +30,12 @@ const login = async(req, res= response) => {
         if( !validPass ){
             return res.status(400).json({
                 ok: false,
-                msg: "Usuario o Correo inválidos"
+                msg: "Usuario o Correo inválido"
             });
         }
 
         ///JWT 
         const token = await generarJWT(usuario.id);
-
-        console.log(usuario.id)
 
         res.json({
             ok: true,
@@ -52,6 +50,22 @@ const login = async(req, res= response) => {
     }
 }
 
+const tokenRenovado = (req, res= response) => {
+
+    if(!req.token){
+        return res.status(500).json({
+            ok:false,
+            msg: "verificar token"
+        })
+    }
+
+    res.json({
+        ok:true,
+        msg: req.token
+    });
+}
+
 module.exports = {
-    login
+    login,
+    tokenRenovado
 }
