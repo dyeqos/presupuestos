@@ -5,7 +5,8 @@ const Usuario = require('../models/usuario');
 
 const listarUsuarios = async(req, res = response) => {
 
-    const usuarios = await Usuario.find().where('aud_estado').ne(3);
+    const usuarios = await Usuario.find().where('aud_estado').ne(3)
+        .populate('rol','nombre');
 
     res.json({
         ok: true,
@@ -18,6 +19,9 @@ const crearUsuarios = async(req, res = response) => {
 
     const { password } = req.body;
     const usuario = new Usuario( req.body );
+
+    //Aud_usuario
+    usuario.aud_usuario = req.uid;
 
     ///Encriptar contraseña
     const salt = bcryptjs.genSaltSync();

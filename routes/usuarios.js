@@ -4,7 +4,7 @@ const { check } = require("express-validator");
 const { validarCampos } = require('../middlewares/validarCampos');
 const { validarJWT } = require('../middlewares/validarJWT');
 
-const { validacionCorreo, validacionID } = require('../helpers/validaciones-db');
+const { validacionCorreo, validacionID, validacionRol } = require('../helpers/validaciones-db');
 
 const { listarUsuarios, modificarUsuarios, crearUsuarios, eliminarUsuarios } = require("../controllers/usuarios");
 
@@ -20,7 +20,8 @@ router.post('/',[
     check("correo","Revise el formato del correo").exists().notEmpty().isEmail().isLowercase(),
     check("correo").custom( validacionCorreo ),
     check("password","Revise el password, debe ser mayor a seis caracteres").exists().notEmpty().isString().isLength({min:6}),
-    check('rol',"Revise el rol").exists().notEmpty().isString().isIn(['ADMIN','USUARIO']),
+    check('rol',"No es un ID válido").isMongoId(),
+    check('rol').custom( validacionRol ),
     validarCampos
 ] ,crearUsuarios );
 

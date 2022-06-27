@@ -1,9 +1,9 @@
-const Rol = require('../models/rol');
+const Rol = require('../models/parametro');
 const Usuario = require('../models/usuario');
 
 ///valida que este registrado el ROL en BD
 const validacionRol = async(rol = '') => {
-    const existeRol = await Rol.findOne({ rol});
+    const existeRol = await Rol.findById( rol );
     if( !existeRol ) {
         throw new Error(`El rol "${rol}" no está registrado en la BD`);
     }

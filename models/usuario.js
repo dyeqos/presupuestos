@@ -26,9 +26,9 @@ const usuarioSchema = Schema({
             type: String,
         },
         rol:{
-            type: String,
-            required: [true, 'El rol del usuario es obligatorio'],
-            emun: ['ADMIN','USUARIO']
+            type: Schema.Types.ObjectId,
+            ref: 'Parametro',
+            required: [true, 'El rol del usuario es obligatorio']
         },
         estado:{
             type: Boolean,
@@ -47,13 +47,19 @@ const usuarioSchema = Schema({
             default:  new Date().toDateString()
         },
         aud_usuario:{
-            type: String,
+            type: Schema.Types.ObjectId,
+            ref: 'Usuario',
             required: [true, 'Usuario registro obligatorio']
         }
 });
 
 usuarioSchema.methods.toJSON = function () {
-    const { __v, password, _id, ...usuario } = this.toObject();
+    const { __v, _id, 
+            password, 
+            aud_estado, 
+            aud_fecha,
+            aud_usuario, 
+            ...usuario } = this.toObject();
     usuario.uid = _id;
     return usuario;
 }
