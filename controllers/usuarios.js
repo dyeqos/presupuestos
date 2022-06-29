@@ -15,6 +15,20 @@ const listarUsuarios = async(req, res = response) => {
     });
 }
 
+const verUsuario = async(req, res = response) => {
+
+    const uid = req.params.id;
+
+    const usuario = await Usuario.findById(uid).where('aud_estado').ne(3)
+        .populate('rol','nombre');
+
+    res.json({
+        ok: true,
+        msg: "Listado de usuarios",
+        data: usuario
+    });
+}
+
 const crearUsuarios = async(req, res = response) => {
 
     const { password } = req.body;
@@ -73,4 +87,5 @@ module.exports = {
     crearUsuarios,
     modificarUsuarios,
     eliminarUsuarios,
+    verUsuario,
 }
