@@ -12,8 +12,8 @@ const router = Router();
 
 router.get('/', listarUsuarios );
 
-router.get('/:id',[
-    check('id',"No es un ID válido").isMongoId(),
+router.get('/:uid',[
+    check('uid',"No es un ID válido").isMongoId(),
     validarCampos
 ], verUsuario );
 
@@ -32,21 +32,22 @@ router.post('/',[
 
 router.put('/',[
     validarJWT,
-    check('id','No es un ID válido').isMongoId(),
-    check('id').custom( validacionID ),
+    check('uid','No es un ID válido').isMongoId(),
+    check('uid').custom( validacionID ),
     check("nombre","Revise el formato del nombre").exists().notEmpty().isString().isUppercase(),
     check("paterno","Revise el formato del apellido paterno").exists().notEmpty().isString().isUppercase(),
     check("materno","Revise el formato del apellido materno").exists().notEmpty().isString().isUppercase(),
     check("correo","Revise el formato del correo").exists().notEmpty().isEmail().isLowercase(),
     check("password","Revise el password, debe ser mayor a seis caracteres").isString().if(check('password').not().isEmpty()).isLength({min:6}),
-    check('rol',"Revise el rol").exists().notEmpty().isString().isIn(['ADMIN','USUARIO']),
+    check('rol',"No es un ID válido").isMongoId(),
+    check('rol').custom( validacionRol ),
     validarCampos
 ], modificarUsuarios );
 
 router.delete('/',[
     validarJWT,
-    check('id','No es un ID válido').isMongoId(),
-    check('id').custom( validacionID ),
+    check('uid','No es un ID válido').isMongoId(),
+    check('uid').custom( validacionID ),
     validarCampos
 ], eliminarUsuarios );
 

@@ -39,7 +39,7 @@ const validarJWT = async(req, res = response, next ) => {
 
         ///Devuleve el Usuario en la Request
         req.usuario = usuario;
-        req.uid= uid;
+        req.aud_usuario= uid;
         req.token = await generarJWT( uid ) ;
 
         next();

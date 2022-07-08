@@ -17,7 +17,7 @@ const listarUsuarios = async(req, res = response) => {
 
 const verUsuario = async(req, res = response) => {
 
-    const uid = req.params.id;
+    const uid = req.params.uid;
 
     const usuario = await Usuario.findById(uid).where('aud_estado').ne(3)
         .populate('rol','nombre');
@@ -35,7 +35,7 @@ const crearUsuarios = async(req, res = response) => {
     const usuario = new Usuario( req.body );
 
     //Aud_usuario
-    usuario.aud_usuario = req.uid;
+    usuario.aud_usuario = req.aud_usuario;
 
     ///Encriptar contraseña
     const salt = bcryptjs.genSaltSync();
@@ -51,7 +51,7 @@ const crearUsuarios = async(req, res = response) => {
 
 const modificarUsuarios = async(req, res = response) => {
 
-    const { _id, id, password, google, correo, ...resto } = req.body;
+    const { _id, uid, password, google, correo, ...resto } = req.body;
 
     ///Encripta nuevo password
     if( password ){
@@ -61,7 +61,8 @@ const modificarUsuarios = async(req, res = response) => {
 
     ///Modificación de registro
     resto.aud_estado = 2;
-    const usuario = await Usuario.findByIdAndUpdate( id, resto );
+    resto.aud_usuario = req.aud_usuario;
+    const usuario = await Usuario.findByIdAndUpdate( uid, resto );
 
     res.json({
         ok: true,
@@ -72,13 +73,19 @@ const modificarUsuarios = async(req, res = response) => {
 
 const eliminarUsuarios = async(req, res = response) => {
 
-    const { _id, id } = req.body;
+    const { _id, uid } = req.body;
 
-    const usuario = await Usuario.findByIdAndUpdate( id, {aud_estado:3} );
+    const usuario = await Usuario.findByIdAndUpdate( uid, 
+        {
+            aud_estado: 3,
+            aud_usuario: req.aud_usuario
+        } 
+    );
 
     res.json({
         ok: true,
-        msg: "Usuario Eliminado"
+        msg: "Usuario Eliminado",
+        usuario
     });
 }
 
