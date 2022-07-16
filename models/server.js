@@ -7,9 +7,12 @@ class Server {
 
         this.app = express();
         this.port = process.env.PORT;
-        this.usuariosPath = '/api/usuarios';
-        this.loginPath = '/api/auth';
-        this.parametrosPath = '/api/params';
+        this.rutas = {
+            usuariosPath : '/api/usuarios',
+            loginPath : '/api/auth',
+            parametrosPath : '/api/params',
+            activosPath: '/api/activos',
+        }
 
         //conectar a base de datos
         this.conectarDB();     
@@ -27,9 +30,10 @@ class Server {
     }
 
     routes(){
-        this.app.use( this.loginPath, require('../routes/auth'));
-        this.app.use( this.usuariosPath, require('../routes/usuarios'));
-        this.app.use( this.parametrosPath, require('../routes/parametros'));
+        this.app.use( this.rutas.loginPath, require('../routes/auth') );
+        this.app.use( this.rutas.usuariosPath, require('../routes/usuarios') );
+        this.app.use( this.rutas.parametrosPath, require('../routes/parametros') );
+        this.app.use( this.rutas.activosPath, require('../routes/activos') );
     }
 
     middlewares(){

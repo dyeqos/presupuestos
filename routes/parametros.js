@@ -6,11 +6,13 @@ const { validarCampos } = require('../middlewares/validarCampos');
 
 const { validacionParametro } = require('../helpers/validaciones-db');
 
-const { listarRoles, crearParametros } = require('../controllers/parametros');
+const { listarRoles, crearParametros, listarTipoAcivo } = require('../controllers/parametros');
 
 const router = Router();
 
 router.get( '/roles', listarRoles );
+
+router.get( '/tipos-activos', listarTipoAcivo );
 
 router.post( '/', [
     validarJWT,

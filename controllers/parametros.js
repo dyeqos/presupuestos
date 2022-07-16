@@ -13,10 +13,28 @@ const listarRoles = async(req, res=response) => {
     });
 }
 
+const listarTipoAcivo = async(req, res=response) => {
+
+    const tipoActivo = await Parametro.find( 
+        { 
+            tipo:"ACTIVO", 
+            aud_estado: {
+                $ne: 3
+            }
+        }
+    );
+
+    res.json({
+        ok: true,
+        msg: "Listado de tipos de activos",
+        data: tipoActivo
+    })
+}
+
 const crearParametros = async( req, res = response ) => {
     
     const parametro = new Parametro( req.body );
-    parametro.aud_usuario = req.uid;
+    parametro.aud_usuario = req.aud_usuario;
 
     await parametro.save();
 
@@ -29,5 +47,6 @@ const crearParametros = async( req, res = response ) => {
 
 module.exports = {
     crearParametros,
-    listarRoles
+    listarRoles,
+    listarTipoAcivo
 }

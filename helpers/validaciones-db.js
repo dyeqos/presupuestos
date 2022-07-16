@@ -1,10 +1,27 @@
-const Rol = require('../models/parametro');
+
 const Parametro = require('../models/parametro');
 const Usuario = require('../models/usuario');
+const Activo = require('../models/activo');
+
+///valida que este registrado el ROL en BD
+const validacionTipoActivo = async(tipo_activo = '') => {
+    const existeTipoActivo = await Parametro.findById( tipo_activo );
+    if( !existeTipoActivo ) {
+        throw new Error(`El tipo de activo "${tipo_activo}" no está registrado en la BD`);
+    }
+}
+
+//valida que exista el activo en BD
+const validacionActivo = async(uid = '') => {
+    const existeActivo = await Activo.findById( uid );
+    if( !existeActivo ) {
+        throw new Error(`El activo con id "${uid}" no está registrado en la BD`);
+    }
+}
 
 ///valida que este registrado el ROL en BD
 const validacionRol = async(rol = '') => {
-    const existeRol = await Rol.findById( rol );
+    const existeRol = await Parametro.findById( rol );
     if( !existeRol ) {
         throw new Error(`El rol "${rol}" no está registrado en la BD`);
     }
@@ -16,7 +33,6 @@ const validacionParametro = async(parametro = '') => {
     if( existeParametro ){
         throw new Error(`El parametro '${parametro}' ya se encuentra registrado en la BD`)
     }
-
 }
 
 ///valida que el correo sea unico en BD
@@ -25,7 +41,6 @@ const validacionCorreo = async(correo = '') => {
     if( existeCorreo ){
         throw new Error(`El correo '${correo}' ya se encuentra registrado en la BD`)
     }
-
 }
 
 ///valida que el ID exista en la BD
@@ -34,7 +49,6 @@ const validacionID = async( id ) => {
     if( !existeID ){
         throw new Error(`El ID no existe en la BD`)
     }
-
 }
 
 module.exports = {
@@ -42,4 +56,6 @@ module.exports = {
     validacionCorreo,
     validacionID,
     validacionParametro,
+    validacionTipoActivo,
+    validacionActivo,
 }
