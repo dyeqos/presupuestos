@@ -73,11 +73,12 @@ const modificarUsuarios = async(req, res = response) => {
 
 const eliminarUsuarios = async(req, res = response) => {
 
-    const { _id, uid } = req.body;
+    const { uid } = req.body;
 
     const usuario = await Usuario.findByIdAndUpdate( uid, 
         {
             aud_estado: 3,
+            aud_fecha: new Date().toDateString(),
             aud_usuario: req.aud_usuario
         } 
     );

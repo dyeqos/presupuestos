@@ -7,7 +7,7 @@ const Activo = require('../models/activo');
 const validacionTipoActivo = async(tipo_activo = '') => {
     const existeTipoActivo = await Parametro.findById( tipo_activo );
     if( !existeTipoActivo ) {
-        throw new Error(`El tipo de activo "${tipo_activo}" no está registrado en la BD`);
+        throw new Error(`El tipo de activo '${tipo_activo}' no está registrado en la BD`);
     }
 }
 
@@ -15,7 +15,7 @@ const validacionTipoActivo = async(tipo_activo = '') => {
 const validacionActivo = async(uid = '') => {
     const existeActivo = await Activo.findById( uid );
     if( !existeActivo ) {
-        throw new Error(`El activo con id "${uid}" no está registrado en la BD`);
+        throw new Error(`El activo con id '${uid}' no está registrado en la BD`);
     }
 }
 
@@ -23,7 +23,7 @@ const validacionActivo = async(uid = '') => {
 const validacionRol = async(rol = '') => {
     const existeRol = await Parametro.findById( rol );
     if( !existeRol ) {
-        throw new Error(`El rol "${rol}" no está registrado en la BD`);
+        throw new Error(`El rol '${rol}' no está registrado en la BD`);
     }
 }
 

@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const path  = require('path');
 const { dbConnectionMysql, dbConnectionMongoose } = require('../database/config');
 
 class Server {
@@ -34,6 +35,9 @@ class Server {
         this.app.use( this.rutas.usuariosPath, require('../routes/usuarios') );
         this.app.use( this.rutas.parametrosPath, require('../routes/parametros') );
         this.app.use( this.rutas.activosPath, require('../routes/activos') );
+        this.app.get( '*',(req, res) => {
+            res.sendFile( path.resolve( __dirname,'../public/index.html'))
+        })
     }
 
     middlewares(){
