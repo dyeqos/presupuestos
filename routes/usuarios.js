@@ -6,11 +6,17 @@ const { validarJWT } = require('../middlewares/validarJWT');
 
 const { validacionCorreo, validacionID, validacionRol } = require('../helpers/validaciones-db');
 
-const { listarUsuarios, modificarUsuarios, crearUsuarios, eliminarUsuarios, verUsuario } = require("../controllers/usuarios");
+const { listarUsuarios, modificarUsuarios, crearUsuarios, eliminarUsuarios, verUsuario, verPerfil } = require("../controllers/usuarios");
 
 const router = Router();
 
 router.get('/', listarUsuarios );
+
+
+router.get('/perfil',[
+    validarJWT,
+    validarCampos
+], verPerfil );
 
 router.get('/:uid',[
     check('uid',"No es un ID válido").isMongoId(),

@@ -29,6 +29,19 @@ const verUsuario = async(req, res = response) => {
     });
 }
 
+const verPerfil = async(req, res = response) => {
+
+    const uid = req.aud_usuario;
+    const usuario = await Usuario.findById(uid).where('aud_estado').ne(3)
+        .populate('rol','nombre');
+
+    res.json({
+        ok: true,
+        msg: "Mi perfil",
+        data: usuario
+    });
+}
+
 const crearUsuarios = async(req, res = response) => {
 
     const { password } = req.body;
@@ -96,4 +109,5 @@ module.exports = {
     modificarUsuarios,
     eliminarUsuarios,
     verUsuario,
+    verPerfil,
 }
