@@ -11,6 +11,22 @@ const validacionTipoActivo = async(tipo_activo = '') => {
     }
 }
 
+///valida que este registrado el BANCO en BD
+const validacionBanco = async(banco = '') => {
+    const existeBanco = await Parametro.findById( banco );
+    if( !existeBanco ) {
+        throw new Error(`El banco '${banco}' no está registrado en la BD`);
+    }
+}
+
+///valida que este registrado el tipoCuenta en BD
+const validacionTipoCuenta = async(tipo_cuenta = '') => {
+    const existeTipoCuenta = await Parametro.findById( tipo_cuenta );
+    if( !existeTipoCuenta ) {
+        throw new Error(`El tipo de cuenta'${tipo_cuenta}' no está registrado en la BD`);
+    }
+}
+
 //valida que exista el activo en BD
 const validacionActivo = async(uid = '') => {
     const existeActivo = await Activo.findById( uid );
@@ -58,4 +74,6 @@ module.exports = {
     validacionParametro,
     validacionTipoActivo,
     validacionActivo,
+    validacionBanco,
+    validacionTipoCuenta,
 }

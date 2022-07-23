@@ -2,6 +2,17 @@ const { response } = require('express');
 
 const Parametro = require('../models/parametro');
 
+const listarParametros = async(req, res=response) => {
+
+    const parametro = await Parametro.find().where('aud_estado').ne(3);
+
+    res.json({
+        ok: true,
+        msg: "Listado de parametros",
+        data: parametro
+    });
+}
+
 const listarRoles = async(req, res=response) => {
 
     const roles = await Parametro.find({tipo:"ROL"}).where('aud_estado').ne(3);
@@ -31,6 +42,42 @@ const listarTipoAcivo = async(req, res=response) => {
     })
 }
 
+const listarBancos = async(req, res=response) => {
+
+    const bancos = await Parametro.find( 
+        { 
+            tipo:"BANCO", 
+            aud_estado: {
+                $ne: 3
+            }
+        }
+    );
+
+    res.json({
+        ok: true,
+        msg: "Listado de bancos",
+        data: bancos
+    })
+}
+
+const listarTiposCuentas = async(req, res=response) => {
+
+    const tipoCuenta = await Parametro.find( 
+        { 
+            tipo:"CUENTA", 
+            aud_estado: {
+                $ne: 3
+            }
+        }
+    );
+
+    res.json({
+        ok: true,
+        msg: "Listado de tipos de cuentas",
+        data: tipoCuenta
+    })
+}
+
 const crearParametros = async( req, res = response ) => {
     
     const parametro = new Parametro( req.body );
@@ -48,5 +95,8 @@ const crearParametros = async( req, res = response ) => {
 module.exports = {
     crearParametros,
     listarRoles,
-    listarTipoAcivo
+    listarTipoAcivo,
+    listarParametros,
+    listarBancos,
+    listarTiposCuentas,
 }

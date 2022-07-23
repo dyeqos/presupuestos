@@ -13,6 +13,7 @@ class Server {
             loginPath : '/api/auth',
             parametrosPath : '/api/params',
             activosPath: '/api/activos',
+            cuentasPath: '/api/cuentas',
         }
 
         //conectar a base de datos
@@ -35,6 +36,7 @@ class Server {
         this.app.use( this.rutas.usuariosPath, require('../routes/usuarios') );
         this.app.use( this.rutas.parametrosPath, require('../routes/parametros') );
         this.app.use( this.rutas.activosPath, require('../routes/activos') );
+        this.app.use( this.rutas.cuentasPath, require('../routes/cuentas') );
         this.app.get( '*',(req, res) => {
             res.sendFile( path.resolve( __dirname,'../public/index.html'))
         })
@@ -50,6 +52,13 @@ class Server {
 
         //Parseo Body
         this.app.use( express.json() );
+
+        this.app.use((err, req, res, next) => {
+            res.status(400).json({
+                ok: false,
+                msg:"El cuerpo de la petición es incorrecto. "+err
+            });
+          });
     }
 
     listen(){
