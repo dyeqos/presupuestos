@@ -2,6 +2,15 @@
 const Parametro = require('../models/parametro');
 const Usuario = require('../models/usuario');
 const Activo = require('../models/activo');
+const Cuenta = require('../models/cuenta');
+
+///valida que este registrado el ROL en BD
+const validacionCuenta = async(id_cuenta = '') => {
+    const existeCuenta = await Cuenta.findById( id_cuenta );
+    if( !existeCuenta ) {
+        throw new Error(`El tipo de activo '${id_cuenta}' no está registrado en la BD`);
+    }
+}
 
 ///valida que este registrado el ROL en BD
 const validacionTipoActivo = async(tipo_activo = '') => {
@@ -76,4 +85,5 @@ module.exports = {
     validacionActivo,
     validacionBanco,
     validacionTipoCuenta,
+    validacionCuenta,
 }

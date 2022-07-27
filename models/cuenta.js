@@ -25,10 +25,6 @@ const cuentaSchema = Schema({
         default: 0,
         required: [ true , 'El saldo de la cuenta es obligatorio']
     },
-    fecha: {
-        type: Date,
-        required: [ true, 'La feca es obligatorio' ]
-    },
     aud_estado: {
         type: Number,
         default: 1
