@@ -6,7 +6,7 @@ const { validarCampos } = require('../middlewares/validarCampos');
 
 const { validacionParametro } = require('../helpers/validaciones-db');
 
-const { listarRoles, crearParametros, listarTipoAcivo, listarParametros, listarBancos, listarTiposCuentas } = require('../controllers/parametros');
+const { listarRoles, crearParametros, listarTipoAcivo, listarParametros, listarBancos, listarTiposCuentas, listarTiposIngresos } = require('../controllers/parametros');
 
 const router = Router();
 
@@ -19,6 +19,14 @@ router.get( '/tipos-activos', listarTipoAcivo );
 router.get( '/bancos', listarBancos );
 
 router.get( '/cuentas', listarTiposCuentas );
+
+//cuentas individual mas la publica
+router.get( '/cuentas-ind-pub',[
+    validarJWT,
+    validarCampos,
+], listarTiposCuentas );
+
+router.get( '/ingresos', listarTiposIngresos );
 
 router.post( '/', [
     validarJWT,

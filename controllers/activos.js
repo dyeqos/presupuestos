@@ -22,7 +22,27 @@ const listarCotizaciones = async(req, res=response) => {
     });
 }
 
-const verCotizacion = async(req, res=response) => {
+const listarActivos = async(req, res=response) => {
+
+    const activos = await Activos.find({
+        estado_activo: 2,
+        aud_estado: {
+            $ne: 3
+        }
+    })
+    .populate('tipo_activo','nombre')
+    .sort({
+        posicion: 1
+    });
+
+    res.json({
+        ok: true,
+        msg: "Listado de Activos",
+        data: activos
+    });
+}
+
+const verActivo = async(req, res=response) => {
 
     const uid = req.params.uid;
     const activos = await Activos.findById(uid).where('aud_estado').ne(3)
@@ -100,9 +120,10 @@ const eliminarActivo = async(req, res=response) => {
 
 module.exports = {
     listarCotizaciones,
+    listarActivos,
     crearActivo,
     modificarPosicion,
     modificarActivo,
-    verCotizacion,
+    verActivo,
     eliminarActivo,
 }

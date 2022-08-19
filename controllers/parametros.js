@@ -78,6 +78,24 @@ const listarTiposCuentas = async(req, res=response) => {
     })
 }
 
+const listarTiposIngresos = async(req, res=response) => {
+
+    const tipoIngreso = await Parametro.find( 
+        { 
+            tipo:"INGRESOS", 
+            aud_estado: {
+                $ne: 3
+            }
+        }
+    );
+
+    res.json({
+        ok: true,
+        msg: "Listado de tipos de Ingresos",
+        data: tipoIngreso
+    })
+}
+
 const crearParametros = async( req, res = response ) => {
     
     const parametro = new Parametro( req.body );
@@ -99,4 +117,5 @@ module.exports = {
     listarParametros,
     listarBancos,
     listarTiposCuentas,
+    listarTiposIngresos,
 }

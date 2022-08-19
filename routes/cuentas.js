@@ -5,12 +5,18 @@ const { validarJWT } = require('../middlewares/validarJWT');
 const { validarCampos } = require('../middlewares/validarCampos');
 
 const { validacionID, validacionBanco, validacionTipoCuenta, validacionCuenta } = require('../helpers/validaciones-db');
-const { listarCuentas, crearCuenta, modificarCuenta, verCuenta } = require('../controllers/cuentas');
+const { listarCuentas, crearCuenta, modificarCuenta, verCuenta, listarCuentasIndiPub } = require('../controllers/cuentas');
 
 
 const router = Router();
 
 router.get('/', listarCuentas );
+
+router.get('/mis-cuentas',[
+    validarJWT,
+    validarCampos,
+],listarCuentasIndiPub );
+
 router.get('/:uid',[
     check('uid',"No es un ID válido").isMongoId(),
     check("uid").custom( validacionCuenta ),
@@ -25,6 +31,7 @@ router.post('/',[
     check('usuario').custom( validacionID ),
     check("tipo_cuenta","Revise el formato del tipo").isMongoId(),
     check('tipo_cuenta').custom( validacionTipoCuenta ),
+    check('descripcion').exists().notEmpty().isString().isUppercase(),
     validarCampos
 ], crearCuenta );
 
@@ -39,6 +46,7 @@ router.put('/',[
     check('usuario').custom( validacionID ),
     check("tipo_cuenta","Revise el formato del tipo").isMongoId(),
     check('tipo_cuenta').custom( validacionTipoCuenta ),
+    check('descripcion').exists().notEmpty().isString().isUppercase(),
     validarCampos
 ], modificarCuenta );
 

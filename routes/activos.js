@@ -4,17 +4,19 @@ const { check, body } = require("express-validator");
 const { validarJWT } = require('../middlewares/validarJWT');
 const { validarCampos } = require('../middlewares/validarCampos');
 
-const { listarCotizaciones, crearActivo, modificarPosicion, modificarActivo, verCotizacion, eliminarActivo } = require('../controllers/activos');
+const { listarCotizaciones,listarActivos, crearActivo, modificarPosicion, modificarActivo, verActivo, eliminarActivo } = require('../controllers/activos');
 const { validacionTipoActivo, validacionActivo } = require('../helpers/validaciones-db');
 
 const router = Router();
 
+router.get( '/', listarActivos );
+
 router.get( '/cotizacion', listarCotizaciones );
 
-router.get( '/cotizacion/:uid',[
+router.get( '/:uid',[
     check('uid',"No es un ID válido").isMongoId(),
     check("uid").custom( validacionActivo ),
-], verCotizacion );
+], verActivo );
 
 router.post( '/', [
     validarJWT,

@@ -25,6 +25,39 @@ const listarCuentas = async(req, res=response) => {
     });
 }
 
+const listarCuentasIndiPub = async(req, res=response) => {
+
+    const usuarioUID = req.aud_usuario;
+    const cuentas = await Cuenta.find({
+        aud_estado: {
+            $ne: 3
+        }
+    })
+    .populate('banco','nombre')
+    .populate('tipo_cuenta','nombre')
+    .populate({
+        path: 'tipo_cuenta',
+        match:{
+            $or:[
+                { nombre: 'CUENTA MÚTUA' },
+                { uid: usuarioUID }
+            ]
+        }
+    })
+    .populate('usuario',
+     {
+        nombre:1,
+        paterno:1,
+        materno:1,
+    });
+
+    res.json({
+        ok: true,
+        msg: "Listado de cotizaciones",
+        data: cuentas
+    });
+}
+
 const verCuenta = async(req, res=response) => {
 
     const uid = req.params.uid;
@@ -79,6 +112,7 @@ const modificarCuenta = async(req, res=response) => {
 
 module.exports = {
     listarCuentas,
+    listarCuentasIndiPub,
     crearCuenta,
     modificarCuenta,
     verCuenta,

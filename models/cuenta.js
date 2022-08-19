@@ -1,6 +1,6 @@
 const { Schema, model } = require('mongoose');
 
-const cuentaSchema = Schema({
+const cuentaSchema = Schema({ 
     numero_cuenta: {
         type: String,
         required: [ true, 'El numero de cuenta es obligatorio']
@@ -19,6 +19,10 @@ const cuentaSchema = Schema({
         type: Schema.Types.ObjectId,
         ref: 'Parametro',
         required: [ true, 'El tipo de cuenta es obligatorio']
+    },
+    descripcion:{
+        type: String,
+        required: [ true, 'La descripción es obligatorio']
     },
     saldo:{
         type: Number,

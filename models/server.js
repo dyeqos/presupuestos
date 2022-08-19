@@ -14,6 +14,8 @@ class Server {
             parametrosPath : '/api/params',
             activosPath: '/api/activos',
             cuentasPath: '/api/cuentas',
+            comprasPath: '/api/compras',
+            movimientosPath: '/api/movimientos'
         }
 
         //conectar a base de datos
@@ -37,6 +39,8 @@ class Server {
         this.app.use( this.rutas.parametrosPath, require('../routes/parametros') );
         this.app.use( this.rutas.activosPath, require('../routes/activos') );
         this.app.use( this.rutas.cuentasPath, require('../routes/cuentas') );
+        this.app.use( this.rutas.comprasPath, require('../routes/compras') );
+        this.app.use( this.rutas.movimientosPath, require('../routes/movimientos') );
         this.app.get( '*',(req, res) => {
             res.sendFile( path.resolve( __dirname,'../public/index.html'))
         })
