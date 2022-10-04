@@ -62,7 +62,10 @@ class Server {
                 ok: false,
                 msg:"El cuerpo de la petición es incorrecto. "+err
             });
-          });
+        });
+
+        //TimeZona
+        process.env.TZ = 'America/La_Paz';
     }
 
     listen(){

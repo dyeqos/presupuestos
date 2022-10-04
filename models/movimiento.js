@@ -1,7 +1,7 @@
 const { Schema, model } = require('mongoose');
 
 const movimientoSchema = Schema({ 
-    fecha_compra: {
+    fecha_movimiento: {
         type: Date,
         required:[ true, 'La fecha compra es obligatoria'],
     },

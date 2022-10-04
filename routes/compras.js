@@ -13,7 +13,7 @@ router.post('/:uid',[
     validarJWT,
     check('uid',"No es un ID válido").isMongoId(),
     check("uid").custom( validacionActivo ),
-    check('fecha_compra').exists().notEmpty().isDate({format: 'YYYY-MM-DD'}),
+    check('fecha_movimiento').exists().notEmpty().isDate({format: 'YYYY-MM-DD'}),
     check("cuenta","Revise el formato del tipo").isMongoId(),
     check('cuenta').custom( validacionCuenta ),
     check('lugar_compra').exists().notEmpty().isString().isUppercase(),

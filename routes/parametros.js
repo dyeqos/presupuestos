@@ -28,6 +28,8 @@ router.get( '/cuentas-ind-pub',[
 
 router.get( '/ingresos', listarTiposIngresos );
 
+router.get( '/egresos', listarTiposIngresos );
+
 router.post( '/', [
     validarJWT,
     check("nombre","Revise el formato del nombre").exists().notEmpty().isString().isUppercase(),
