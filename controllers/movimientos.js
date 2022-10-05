@@ -77,6 +77,7 @@ const listarMovimientos = async(req, res=response) => {
     const fechaHasta = req.body.fecha_hasta ? req.body.fecha_hasta : "";
     const tipoMovimiento = req.body.lugar_compra ? req.body.lugar_compra : "";
     const cuentaUID = req.body.cuenta ? req.body.cuenta : "";
+    let saldoCuenta = -9999;
     //armar consulta con fechas
     let consulta = [];
     if(fechaDesde!="" && fechaHasta!="" ){
@@ -97,6 +98,25 @@ const listarMovimientos = async(req, res=response) => {
 
     if( cuentaUID!="" ){
         consulta.push({cuenta:ObjectId(cuentaUID)});
+        const auxMovimientos = await Movimiento.find({
+            aud_estado: {
+                $ne: 3
+            },
+            cuenta : cuentaUID
+        });
+
+        if(auxMovimientos.length>0){
+            let suma = 0;
+            auxMovimientos.forEach( data => {
+                if(data.lugar_compra == INGRESO){
+                    suma = suma + data.total; 
+                }else{
+                    suma = suma - data.total;
+                }
+                
+            })
+            saldoCuenta = suma;
+        }
     }
 
     const movimientos = await Movimiento.aggregate([
@@ -124,10 +144,9 @@ const listarMovimientos = async(req, res=response) => {
                                                 path: "banco"
                                             }
                                         });
-
     res.json({
         ok: true,
-        msg: "Listado de movimientos",
+        msg: saldoCuenta,
         data: detalleMovimientos
     });
  
